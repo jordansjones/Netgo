@@ -11,7 +11,7 @@ var outputDirectory = Directory(Argument<string>("OutDir", Context.Environment.W
 ///////////////////////////////////////////////////////////////////////////////
 
 var solutionPath = Context.Environment.WorkingDirectory.GetFilePath("NGo.sln");
-var runtimeIdentifiers = new string[] { "win-x64", "linux-x64" };
+var runtimeIdentifiers = new string[] { "win-x64", "linux-x64", "osx-x64" };
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
