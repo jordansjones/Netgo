@@ -3,12 +3,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 var target          = Argument<string>("target", "Default");
+var configuration   = Argument<string>("configuration", "Debug");
+var outputDirectory = Directory(Argument<string>("OutDir", Context.Environment.WorkingDirectory.Combine("publish").FullPath)).Path.MakeAbsolute(Context.Environment.WorkingDirectory);
 
 ///////////////////////////////////////////////////////////////////////////////
 // GLOBAL VARIABLES
 ///////////////////////////////////////////////////////////////////////////////
 
 var solutionPath = Context.Environment.WorkingDirectory.GetFilePath("NGo.sln");
+var runtimeIdentifiers = new string[] { "win-x64", "linux-x64" };
 
 ///////////////////////////////////////////////////////////////////////////////
 // SETUP / TEARDOWN
@@ -17,23 +20,41 @@ var solutionPath = Context.Environment.WorkingDirectory.GetFilePath("NGo.sln");
 Setup(context =>
 {
     // Executed BEFORE the first task.
-    Information("Running tasks...");
 });
 
 Teardown(context =>
 {
     // Executed AFTER the last task.
-    Information("Finished running tasks.");
 });
 
 ///////////////////////////////////////////////////////////////////////////////
 // TASK DEFINITIONS
 ///////////////////////////////////////////////////////////////////////////////
 
-Task("Default").Does(() => 
+Task("Build").Does(() => 
 {
-    Information("Solution Path: {0}", solutionPath);
+    DotNetCoreBuild(solutionPath.FullPath, new DotNetCoreBuildSettings {
+        Configuration = configuration
+    });
 });
+
+Task("Publish")
+.IsDependentOn("Default")
+.Does(() => 
+{
+    foreach (var rid in runtimeIdentifiers)
+    {
+        DotNetCorePublish(solutionPath.FullPath, new DotNetCorePublishSettings {
+            Configuration = configuration,
+            OutputDirectory = outputDirectory.Combine(rid),
+            Runtime = rid,
+            SelfContained = true
+        });
+    }
+});
+
+Task("Default")
+    .IsDependentOn("Build");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION

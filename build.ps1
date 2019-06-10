@@ -39,6 +39,7 @@ https://cakebuild.net
 Param(
     [string]$Script = "build.cake",
     [string]$Target,
+    [ValidateSet("Debug", "Release")]
     [string]$Configuration,
     [ValidateSet("Quiet", "Minimal", "Normal", "Verbose", "Diagnostic")]
     [string]$Verbosity,
