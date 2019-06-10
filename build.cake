@@ -44,9 +44,17 @@ Task("Publish")
 {
     foreach (var rid in runtimeIdentifiers)
     {
+        var outputDir = outputDirectory.Combine(rid);
+        if (DirectoryExists(outputDir))
+        {
+            DeleteDirectory(outputDir, new DeleteDirectorySettings {
+                Force = true,
+                Recursive = true
+            });
+        }
         DotNetCorePublish(solutionPath.FullPath, new DotNetCorePublishSettings {
             Configuration = configuration,
-            OutputDirectory = outputDirectory.Combine(rid),
+            OutputDirectory = outputDir,
             Runtime = rid,
             SelfContained = true
         });
