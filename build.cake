@@ -52,12 +52,14 @@ Task("Publish")
                 Recursive = true
             });
         }
-        DotNetCorePublish(solutionPath.FullPath, new DotNetCorePublishSettings {
+        var settings = new DotNetCorePublishSettings {
+            ArgumentCustomization = args => args.Append("/p:PublishSingleFile=true").Append("/p:PublishTrimmed=true"),
             Configuration = configuration,
             OutputDirectory = outputDir,
             Runtime = rid,
             SelfContained = true
-        });
+        };
+        DotNetCorePublish(solutionPath.FullPath, settings);
     }
 });
 

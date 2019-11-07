@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <Authors>Jordan S. Jones (jordansjones@gmail.com)</Authors>
     <Company>Jordan S. Jones</Company>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
