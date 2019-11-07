@@ -1,2 +1,2 @@
 # Netgo
-Enhanced version of 'cd' for bash
+Enhanced version of 'cd' for whatever
